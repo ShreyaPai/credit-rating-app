@@ -1,0 +1,85 @@
+<div class="details-page">
+  <header class="page-header">
+    <div>
+      <div class="breadcrumb">Issuer details</div>
+      <h1>{{ issuerDetails().issuer.name }}</h1>
+      <p class="issuer-id">Issuer ID: {{ issuerDetails().issuer.id }}</p>
+    </div>
+
+    <div class="header-actions">
+      <button mat-stroked-button (click)="goToDashboard()">
+        <mat-icon>arrow_back</mat-icon>
+        Back to dashboard
+      </button>
+
+      <button mat-flat-button color="primary" (click)="goToFeedbackPage()">
+        <mat-icon>edit</mat-icon>
+        Feedback form
+      </button>
+    </div>
+  </header>
+  <mat-card class="overview-card">
+    <mat-card-header>
+      <mat-card-title>Overview</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="overview-grid">
+        <div class="detail-item">
+          <span class="label">Industry</span>
+          <span class="value">{{ issuerDetails().issuer.industry }}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="label">Country</span>
+          <span class="value">{{ issuerDetails().issuer.country }}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="label">Rating</span>
+          <span class="value rank">{{ issuerDetails().issuer.rating }}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="label">Outlook</span>
+          <span class="outlook">{{ issuerDetails().issuer.outlook }}</span>
+        </div>
+      </div>
+
+      <div class="last-updated">
+        <mat-icon>schedule</mat-icon>
+        <span>Last updated: {{ issuerDetails().issuer.lastUpdated }}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <section class="driver-details-section">
+    <h2>Drivers</h2>
+
+    <div class="drivers-grid">
+      <mat-card
+        class="driver-card"
+        *ngFor="let driver of issuerDetails().drivers"
+      >
+        <mat-card-content>
+          <div class="subject-header">
+            <h3>{{ driver.title }}</h3>
+            <span class="outlook">{{ driver.impact + ' impact' }}</span>
+          </div>
+          <p>{{ driver.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+
+  <mat-card class="insight-card">
+    <mat-card-content>
+      <div class="insight-heading">
+        <mat-icon>auto_awesome</mat-icon>
+        <h2>AI-generated Insight</h2>
+      </div>
+
+      <p>{{ issuerDetails().aiInsight.summary }}</p>
+    </mat-card-content>
+  </mat-card>
+</div>

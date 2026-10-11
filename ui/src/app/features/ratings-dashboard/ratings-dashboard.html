@@ -1,0 +1,8 @@
+<div class="dashboard-section">
+  <div class="search-section">
+    <app-search (searchChange)="search($event)"></app-search>
+  </div>
+  <div class="table-section">
+    <app-issuer-table [issuers]="filtertedIssuers()"></app-issuer-table>
+  </div>
+</div>

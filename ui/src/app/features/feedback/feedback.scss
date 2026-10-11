@@ -1,0 +1,21 @@
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 600px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.feedback-form mat-form-field {
+  width: 100%;
+}
+
+.page-container {
+  padding: 16px;
+}
+
+.back-section {
+  margin-bottom: 20px;
+}

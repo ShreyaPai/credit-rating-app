@@ -1,0 +1,42 @@
+<div class="page-container">
+  <div class="back-section">
+    <button mat-stroked-button type="button" (click)="goToIssuerDetails()">
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button>
+  </div>
+  <form class="feedback-form" [formGroup]="feedbackForm" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Enter your name" formControlName="name" />
+      @if (feedbackForm.get('name')?.invalid && feedbackForm.get('name')?.touched) {
+      <small style="color: red;">Name is required.</small>
+    }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email" />
+      @if (feedbackForm.get('email')?.invalid && feedbackForm.get('email')?.touched) {
+      <small style="color: red;">Please provide a valid email.</small>
+    }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Rating (1–5)</mat-label>
+      <input matInput type="number" min="1" max="5" formControlName="rating" />
+      @if (feedbackForm.get('rating')?.invalid && feedbackForm.get('rating')?.touched) {
+      <small style="color: red;">Please enter a number between 1 to 5.</small>
+    }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Comments</mat-label>
+      <textarea matInput rows="3" formControlName="comments"></textarea>
+    </mat-form-field>
+
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+    </div>
+  </form>
+</div>
