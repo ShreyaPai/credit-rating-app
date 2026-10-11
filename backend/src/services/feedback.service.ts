@@ -23,6 +23,8 @@ export class FeedbackService {
       body.comments.length > 500
     ) {
       throw new Error("Comment cannot be more than 500 characters");
+    } else if (!body.issuerId) {
+      throw new Error("Invalid issuer")
     }
     return this._feedbackRepository.create(body);
   }

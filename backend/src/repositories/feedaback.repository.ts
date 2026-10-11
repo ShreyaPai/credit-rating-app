@@ -4,8 +4,9 @@ export class FeedbackRepository {
   
   create(feedback: any) {
     const data = {
-      id: "fb_" + String(this.id).padStart(3, "0"),
       ...feedback,
+      id: "fb_" + String(this.id).padStart(3, "0"),
+      submittedAt: new Date().toISOString(),
     };
 
     this.feedbackList.push(data);

@@ -8,7 +8,8 @@ export class IssuierRepository {
       data: issuers.data,
       totalElements: issuers.data.length,
     };
-    return response;
+    setTimeout(() => { return response; }, 500)
+    
   }
 
   getById(id: string) {
@@ -21,7 +22,8 @@ export class IssuierRepository {
       const details = issuerDetails.find(
         (issuer: any) => issuer.issuer.id === id,
       );
-      return details;
+
+      setTimeout(() => { return details; }, 300)
     }
   }
 }

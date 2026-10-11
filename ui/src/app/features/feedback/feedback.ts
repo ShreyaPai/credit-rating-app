@@ -11,6 +11,8 @@ import { MatInputModule } from '@angular/material/input';
 import { FeedbackService } from './services/feedback';
 import { Issuer } from '../ratings-dashboard/services/issuer';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SpinnerService } from '../../shared/services/spinner';
+import { NotificationService } from '../../shared/services/notification';
 
 @Component({
   selector: 'app-feedback',
@@ -27,9 +29,12 @@ export class Feedback implements OnInit {
   feedbackService = inject(FeedbackService);
   issuerService = inject(Issuer);
   activatedRoute = inject(ActivatedRoute);
-  router = inject(Router)
+  router = inject(Router);
+  _spinnerService = inject(SpinnerService);
+  _notificationService = inject(NotificationService);
 
   issuerId = signal('');
+  isFormSubmitted = signal(false);
   feedbackForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -51,11 +56,13 @@ export class Feedback implements OnInit {
 
   ngOnInit(): void {
     if (!this.issuerDetails()) {
+      this._spinnerService.showSpinner(true);
       this.issuerService
         .getIssuerById(this.issuerId())
         .subscribe((response: any) => {
           this.feedbackService.issuerDetails = response;
           this.populateForm();
+          this._spinnerService.showSpinner(false);
         });
     } else {
       this.populateForm();
@@ -71,18 +78,33 @@ export class Feedback implements OnInit {
     }
   }
 
-  submit() {
+  public submit(): void {
     if (this.feedbackForm.valid) {
+      this._spinnerService.showSpinner(true);
       console.log('Form Submitted!', this.feedbackForm.value);
-      this.feedbackService.submitFeedback(this.feedbackForm.value).subscribe((response) => {
-        console.log(response);
-      })
+      const request = {
+        ...this.feedbackForm.value,
+        issuerId: this.issuerId(),
+      };
+      this.feedbackService
+        .submitFeedback(request)
+        .subscribe((response: any) => {
+          this._spinnerService.showSpinner(false);
+          console.log(response);
+          this.isFormSubmitted.set(true);
+          this._notificationService.success(response.message);
+        }, error => {
+          this._notificationService.error(error.message);
+        });
     } else {
       console.log('Invalid form data.');
+      this._notificationService.error(
+        'Form is invalid, please correct fields marked in red',
+      );
     }
   }
 
-  goToIssuerDetails(): void {
-    this.router.navigate(['/issuer', this.issuerId()])
+  public goToIssuerDetails(): void {
+    this.router.navigate(['/issuer', this.issuerId()]);
   }
 }
