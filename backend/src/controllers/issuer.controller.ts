@@ -1,27 +1,37 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { IssuerService } from "../services/issuers.service";
 
 export class IssuerController {
   constructor(private _issuerService: IssuerService) {}
 
-  getAllIssuers = (request: Request, response: Response) => {
+  public getAllIssuers = (
+    _request: Request,
+    response: Response,
+    next: NextFunction,
+  ) => {
     console.log("Issuer Controller - getAllIssuers");
-    const result = this._issuerService.getAll();
+    try {
+      const result = this._issuerService.getAll();
 
-    return response.status(200).json(result);
+      return response.status(200).json(result);
+    } catch (e) {
+      next(e);
+    }
   };
 
-  getById = (request: Request, response: Response) => {
-    const id = request.params.id as string;
-    console.log("Issuer Controller - getById", id);
-    const result = this._issuerService.getById(id);
+  public getById = (
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const id = request.params.id as string;
+      console.log("Issuer Controller - getById", id);
+      const result = this._issuerService.getById(id);
 
-    if (!result) {
-      return response.status(404).json({
-        'message': `Issuer with ${id} could not be found. Redirected to dashboard`
-      })
-    } 
-
-    return response.status(200).json(result);
+      return response.status(200).json(result);
+    } catch (err) {
+      next(err);
+    }
   };
 }
