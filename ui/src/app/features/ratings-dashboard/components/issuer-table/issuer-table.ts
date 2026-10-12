@@ -2,6 +2,7 @@ import { Component, inject, input, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { IssuerData, Issuers } from '../../../interfaces/issuers.interface';
 
 @Component({
   selector: 'app-issuer-table',
@@ -13,7 +14,7 @@ export class IssuerTable implements OnInit {
 
   _router = inject(Router)
 
-  issuers = input([]);
+  issuers = input<IssuerData[]>([]);
   displayedColumns: string[] = ['issuerName', 'industry', 'rating', 'outlook', 'lastUpdatedDate', 'open']
 
   ngOnInit(): void {

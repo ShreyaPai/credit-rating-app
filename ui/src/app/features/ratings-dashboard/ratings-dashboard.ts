@@ -1,10 +1,10 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Issuer } from './services/issuer';
-import { IssuerDetails } from '../issuer-details/issuer-details';
 import { IssuerTable } from './components/issuer-table/issuer-table';
 import { Search } from './components/search/search';
 import { SpinnerService } from '../../shared/services/spinner';
 import { NotificationService } from '../../shared/services/notification';
+import { IssuerData, Issuers } from '../interfaces/issuers.interface';
 
 @Component({
   selector: 'app-ratings-dashboard',
@@ -17,8 +17,8 @@ export class RatingsDashboard implements OnInit {
   private _spinnerService = inject(SpinnerService);
   private _notificationService = inject(NotificationService);
 
-  public issuers = signal([]);
-  public searchTerm = signal('');
+  public issuers = signal<IssuerData[]>([]);
+  public searchTerm = signal<string>('');
 
   public filtertedIssuers = computed(() => {
     const searchvalue = this.searchTerm().trim();
@@ -44,7 +44,7 @@ export class RatingsDashboard implements OnInit {
     const pageNo = 1;
     const pageSize = 5;
     this._issuerService.getIssuers(pageNo, pageSize).subscribe(
-      (response: any) => {
+      (response: Issuers) => {
         console.log(response);
         this.issuers.set(response.data);
         this._spinnerService.showSpinner(false);

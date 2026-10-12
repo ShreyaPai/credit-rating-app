@@ -1,29 +1,30 @@
 import { issuerDetails } from "../data/issuer.data";
 import { issuers } from "../data/issuers.data";
+import { IssuerDetails } from "../interfaces/issuer-details.interface";
+import { Issuers } from "../interfaces/issuers.interface";
 
 export class IssuierRepository {
-  getAll() {
+  public getAll(): Issuers {
     console.log("Issuer Repository - getAll");
-    const response = {
+    const response: Issuers = {
       data: issuers.data,
       totalElements: issuers.data.length,
     };
-    setTimeout(() => { return response; }, 500)
-    
+    return response;
   }
 
-  getById(id: string) {
+  public getById(id: string): IssuerDetails | undefined {
     console.log("Issuer Repository - getById");
     const issuer = issuers.data.find((issuer: any) => issuer.id === id);
 
     if (!issuer) {
-      return null;
+      undefined;
     } else {
-      const details = issuerDetails.find(
-        (issuer: any) => issuer.issuer.id === id,
-      );
+      const details: IssuerDetails =
+        issuerDetails.find((issuer: any) => issuer.issuer.id === id) ??
+        ({} as any);
 
-      setTimeout(() => { return details; }, 300)
+      return details;
     }
   }
 }

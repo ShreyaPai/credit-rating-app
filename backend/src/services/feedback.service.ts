@@ -1,10 +1,11 @@
+import { Request } from "express";
 import { FeedbackRepository } from "../repositories/feedaback.repository";
+import { FeedbackRequest } from "../interfaces/feedback.interface";
 
 export class FeedbackService {
   constructor(private _feedbackRepository: FeedbackRepository) {}
 
-  createFeedback(request: any) {
-    const { body } = request;
+  createFeedback(body: FeedbackRequest) {
     console.log("feedback service");
     if (!body.name || body.name.length < 2) {
       throw new Error("Check if name is valid");

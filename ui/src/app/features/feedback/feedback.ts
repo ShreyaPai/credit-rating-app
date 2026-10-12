@@ -13,6 +13,11 @@ import { Issuer } from '../ratings-dashboard/services/issuer';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SpinnerService } from '../../shared/services/spinner';
 import { NotificationService } from '../../shared/services/notification';
+import { IssuerDetailsDto } from '../interfaces/issuer-details.interface';
+import {
+  FeedbackRequest,
+  FeedbackResponse,
+} from '../interfaces/feedback.interface';
 
 @Component({
   selector: 'app-feedback',
@@ -57,19 +62,24 @@ export class Feedback implements OnInit {
   ngOnInit(): void {
     if (!this.issuerDetails()) {
       this._spinnerService.showSpinner(true);
-      this.issuerService
-        .getIssuerById(this.issuerId())
-        .subscribe((response: any) => {
+      this.issuerService.getIssuerById(this.issuerId()).subscribe(
+        (response: IssuerDetailsDto) => {
           this.feedbackService.issuerDetails = response;
           this.populateForm();
           this._spinnerService.showSpinner(false);
-        });
+        },
+        (err) => {
+          const { error } = err;
+          this._notificationService.error(error.message);
+          this._spinnerService.showSpinner(false);
+        },
+      );
     } else {
       this.populateForm();
     }
   }
 
-  populateForm(): void {
+  public populateForm(): void {
     const data = this.issuerDetails().issuer;
     if (data) {
       this.feedbackForm.patchValue({
@@ -86,16 +96,19 @@ export class Feedback implements OnInit {
         ...this.feedbackForm.value,
         issuerId: this.issuerId(),
       };
-      this.feedbackService
-        .submitFeedback(request)
-        .subscribe((response: any) => {
+      this.feedbackService.submitFeedback(request).subscribe(
+        (response: FeedbackResponse) => {
           this._spinnerService.showSpinner(false);
           console.log(response);
           this.isFormSubmitted.set(true);
           this._notificationService.success(response.message);
-        }, error => {
+        },
+        (err) => {
+          const { error } = err;
           this._notificationService.error(error.message);
-        });
+          this._spinnerService.showSpinner(false);
+        },
+      );
     } else {
       console.log('Invalid form data.');
       this._notificationService.error(

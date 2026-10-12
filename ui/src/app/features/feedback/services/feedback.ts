@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
+import { FeedbackResponse } from '../../interfaces/feedback.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,6 @@ export class FeedbackService {
   }
 
   public submitFeedback(data: any) {
-    return this._httpClient.post(`${this.URL}/feedback`, data);
+    return this._httpClient.post<FeedbackResponse>(`${this.URL}/feedback`, data);
   }
 }

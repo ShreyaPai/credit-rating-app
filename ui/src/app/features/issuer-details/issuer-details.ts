@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FeedbackService } from '../feedback/services/feedback';
 import { SpinnerService } from '../../shared/services/spinner';
 import { NotificationService } from '../../shared/services/notification';
+import { IssuerDetailsDto } from '../interfaces/issuer-details.interface';
 
 @Component({
   selector: 'app-issuer-details',
@@ -23,8 +24,8 @@ export class IssuerDetails implements OnInit {
   private _spinnerService = inject(SpinnerService);
   private _notificationService = inject(NotificationService);
 
-  issuerDetails = signal({}) as any;
-  issuerId = signal('');
+  public issuerDetails = signal<IssuerDetailsDto>({issuer: {} as any, drivers: [], aiInsight: {} as any });
+  public issuerId = signal('');
 
   constructor() {
     this.activatedRoute.paramMap.subscribe((param: any) => {
@@ -37,15 +38,16 @@ export class IssuerDetails implements OnInit {
     this.getIssuerDetails();
   }
 
-  getIssuerDetails() {
+  public getIssuerDetails(): void {
     this._spinnerService.showSpinner(true);
     this.issuerService.getIssuerById(this.issuerId()).subscribe(
-      (response: any) => {
+      (response: IssuerDetailsDto) => {
         console.log(response);
         this.issuerDetails.set(response);
         this._spinnerService.showSpinner(false);
       },
-      (error) => {
+      (err) => {
+        const { error } = err;
         this._notificationService.error(error.message);
         this._spinnerService.showSpinner(false);
       },
