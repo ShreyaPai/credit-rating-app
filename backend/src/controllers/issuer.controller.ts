@@ -18,7 +18,7 @@ export class IssuerController {
 
     if (!result) {
       return response.status(404).json({
-        'message': 'Not found'
+        'message': `Issuer with ${id} could not be found. Redirected to dashboard`
       })
     } 
 

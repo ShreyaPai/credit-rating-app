@@ -50,15 +50,16 @@ export class IssuerDetails implements OnInit {
         const { error } = err;
         this._notificationService.error(error.message);
         this._spinnerService.showSpinner(false);
+        this.goToDashboard();
       },
     );
   }
 
-  goToDashboard(): void {
+  public goToDashboard(): void {
     this._router.navigate(['']);
   }
 
-  goToFeedbackPage(): void {
+  public goToFeedbackPage(): void {
     this.feedbackService.issuerDetails = this.issuerDetails();
     this._router.navigate(['issuer/' + this.issuerId() + '/feedback']);
   }

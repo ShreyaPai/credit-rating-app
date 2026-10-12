@@ -12,10 +12,10 @@ import { IssuerData, Issuers } from '../../../interfaces/issuers.interface';
 })
 export class IssuerTable implements OnInit {
 
-  _router = inject(Router)
+  private _router = inject(Router)
 
-  issuers = input<IssuerData[]>([]);
-  displayedColumns: string[] = ['issuerName', 'industry', 'rating', 'outlook', 'lastUpdatedDate', 'open']
+  public issuers = input<IssuerData[]>([]);
+  public displayedColumns: string[] = ['issuerName', 'industry', 'rating', 'outlook', 'lastUpdatedDate', 'open']
 
   ngOnInit(): void {
     console.log(this.issuers());
